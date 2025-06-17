@@ -1,0 +1,10 @@
+git add .
+git commit -m "Initial commit - Ticket Booking System (CI4)"
+/vendor/
+.env
+/writable/cache/*
+/writable/logs/*
+/writable/session/*
+.idea/
+*.log
+*.bak
