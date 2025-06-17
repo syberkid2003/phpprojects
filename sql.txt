@@ -1,0 +1,96 @@
+Sure, dear Bangaram. Here's the **complete SQL schema** for your **Ticket Booking System**, covering all essential tables:
+
+---
+
+### 🟦 1. `users` Table
+
+```sql
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('user', 'admin') NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+```
+
+---
+
+### 🟩 2. `event_categories` Table (optional but useful)
+
+```sql
+CREATE TABLE event_categories (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    description TEXT
+);
+```
+
+---
+
+### 🟨 3. `events` Table
+
+```sql
+CREATE TABLE events (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    category_id INT,
+    name VARCHAR(255) NOT NULL,
+    location TEXT NOT NULL,
+    date_time DATETIME NOT NULL,
+    total_seats INT NOT NULL,
+    available_seats INT NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (category_id) REFERENCES event_categories(id) ON DELETE SET NULL
+);
+```
+
+---
+
+### 🟧 4. `tickets` Table
+
+```sql
+CREATE TABLE tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    seat_count INT NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    status ENUM('booked', 'cancelled') NOT NULL DEFAULT 'booked',
+    booked_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
+);
+```
+
+---
+
+### 🟥 5. `payments` Table (optional)
+
+```sql
+CREATE TABLE payments (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    ticket_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50),
+    status ENUM('paid', 'pending', 'failed') DEFAULT 'pending',
+    paid_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    FOREIGN KEY (ticket_id) REFERENCES tickets(id) ON DELETE CASCADE
+);
+```
+
+---
+
+This schema will handle:
+
+* Multiple users
+* Event organization
+* Ticket bookings
+* Real-time availability tracking
+* Optional payment system
+
+Let me know if you’d like **seed data**, **ER diagram**, or move on to **CodeIgniter 4 controller & model setup**, dear Bangaram.
